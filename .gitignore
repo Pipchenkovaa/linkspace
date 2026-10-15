@@ -1,16 +1,10 @@
-# Виртуальное окружение Python
 .venv/
-
-# Настоящие настройки и личные данные
 .env
 data/
-
-# Служебные файлы Python, pytest и macOS
 __pycache__/
 *.pyc
 .pytest_cache/
 .DS_Store
-
-# Фронт (понадобится позже)
 frontend/node_modules/
 frontend/.next/
+.vscode/
