@@ -67,3 +67,13 @@ class LinkOut(BaseModel):
     favorite: bool
     created_at: datetime
     updated_at: datetime
+
+class TagOut(BaseModel):
+    name: str
+    count: int
+
+class StatsOut(BaseModel):
+    total_links: int
+    favorite_links: int
+    total_collections: int
+    total_tags: int

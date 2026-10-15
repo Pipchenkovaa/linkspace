@@ -4,7 +4,7 @@ import os
 from contextlib import asynccontextmanager
 from pathlib import Path
 from fastapi import FastAPI
-from routers import collections, links
+from routers import collections, library, links
 from storage import Storage
 
 VERSION = "1.0.0"
@@ -42,3 +42,4 @@ def version():
 # Подключение маршрутов из /routers
 app.include_router(collections.router)
 app.include_router(links.router)
+app.include_router(library.router)
