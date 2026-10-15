@@ -1,4 +1,3 @@
-// Русские окончания: 1 ссылка, 2 ссылки, 5 ссылок, 11 ссылок, 21 ссылка
 export function plural(n: number, one: string, few: string, many: string) {
 	const lastDigit = n % 10
 	const lastTwo = n % 100

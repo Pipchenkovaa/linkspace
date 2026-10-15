@@ -1,5 +1,3 @@
-// Типы ответов API — те же поля, что в models.py. Даты приходят строками ISO
-
 export type Collection = {
 	id: number
 	name: string
@@ -38,10 +36,8 @@ export type LinkCreate = {
 	favorite?: boolean
 }
 
-// url сервер менять не даёт: PATCH с ним вернёт 422
 export type LinkUpdate = Partial<Omit<LinkCreate, "url">>
 
-// Фильтры GET /links складываются через И. favorite: true — только избранные
 export type LinkFilters = {
 	search?: string
 	tag?: string
@@ -49,7 +45,6 @@ export type LinkFilters = {
 	favorite?: boolean
 }
 
-// Что сервер кладёт в detail при ошибках
 export type DuplicateLinkDetail = {
 	message: string
 	existing_link_id: number
@@ -59,4 +54,8 @@ export type DuplicateLinkDetail = {
 
 export type CollectionNotEmptyDetail = { message: string; link_count: number }
 
-export type ValidationErrorItem = { loc: (string | number)[]; msg: string; type: string }
+export type ValidationErrorItem = {
+	loc: (string | number)[]
+	msg: string
+	type: string
+}

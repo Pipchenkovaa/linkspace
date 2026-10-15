@@ -1,6 +1,5 @@
 @import "tailwindcss";
 
-/* Цвета из прототипа docs/design/linkspace-prototype.html */
 :root {
 	--panel: #f2f2f2;
 	--ink: #151515;
@@ -11,9 +10,11 @@
 	--star: #f2b705;
 	--online: #2fbf5b;
 	--danger: #d9443a;
+	--lift: 0 1px 2px rgb(0 0 0 / 0.04), 0 14px 32px -16px rgb(0 0 0 / 0.2);
+	--glass-rim: inset 0 1px 0 rgb(255 255 255 / 0.95), inset 0 0 0 1px rgb(255 255 255 / 0.6);
+	--spring: cubic-bezier(0.3, 0.9, 0.3, 1.15);
 }
 
-/* Токены → классы Tailwind: bg-panel, text-soft, border-line, shadow-glass, ease-spring… */
 @theme inline {
 	--color-panel: var(--panel);
 	--color-ink: var(--ink);
@@ -24,18 +25,62 @@
 	--color-star: var(--star);
 	--color-online: var(--online);
 	--color-danger: var(--danger);
+	--shadow-lift: var(--lift);
+	--ease-spring: var(--spring);
 	--font-sans: var(--font-geist-sans);
 	--font-mono: var(--font-geist-mono);
 }
 
-@theme {
-	--ease-spring: cubic-bezier(0.3, 0.9, 0.3, 1.15);
-	--shadow-lift: 0 1px 2px rgb(0 0 0 / 0.04), 0 14px 32px -16px rgb(0 0 0 / 0.2);
-	--shadow-glass: inset 0 1px 0 rgb(255 255 255 / 0.95), inset 0 0 0 1px rgb(255 255 255 / 0.6), 0 1px 2px rgb(0 0 0 / 0.04), 0 14px 32px -16px rgb(0 0 0 / 0.2);
+@utility glass {
+	background: rgb(255 255 255 / 0.58);
+	backdrop-filter: blur(18px) saturate(1.6);
+	box-shadow: var(--glass-rim), var(--lift);
+}
+
+@utility btn-dark {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	height: 44px;
+	padding-inline: 20px;
+	border-radius: 999px;
+	color: #fff;
+	font-size: 14px;
+	font-weight: 500;
+	white-space: nowrap;
+	background: linear-gradient(180deg, #303030, #131313);
+	box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.18), inset 0 0 0 1px rgb(0 0 0 / 0.5), 0 10px 20px -10px rgb(0 0 0 / 0.6);
+	transition: filter 0.2s, transform 0.15s;
+
+	&:hover {
+		filter: brightness(1.25);
+	}
+
+	&:active {
+		transform: scale(0.98);
+	}
+
+	&:disabled {
+		opacity: 0.3;
+		cursor: not-allowed;
+		filter: none;
+		transform: none;
+	}
 }
 
 body {
 	background: var(--panel);
 	color: var(--ink);
 	font-family: var(--font-geist-sans), system-ui, sans-serif;
+}
+
+button:not(:disabled),
+[role="button"] {
+	cursor: pointer;
+}
+
+:focus-visible {
+	outline: 2px solid #3f6fe0;
+	outline-offset: 3px;
 }

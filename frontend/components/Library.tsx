@@ -1,29 +1,102 @@
 "use client"
 
-import { useEffect, useState } from "react"
-import { api } from "@/lib/api"
-import { inCollections, nLinks } from "@/lib/plural"
-import type { Stats } from "@/lib/types"
+import { useCallback, useEffect, useMemo, useState } from "react"
+import type { Link } from "@/lib/types"
+import { useLibrary } from "@/lib/useLibrary"
+import Filters from "./Filters"
+import Header from "./Header"
+import Hero from "./Hero"
+import LinkList from "./LinkList"
+import Shelf from "./Shelf"
+import Toast from "./Toast"
 
-// Главный экран. Пока только заголовок — он показывает, что фронт получает данные из API
 export default function Library() {
-	const [stats, setStats] = useState<Stats | null>(null)
-	const [failed, setFailed] = useState(false)
+	const [toast, setToast] = useState({ text: "", visible: false })
+	const showToast = useCallback(
+		(text: string) => setToast({ text, visible: true }),
+		[],
+	)
 
 	useEffect(() => {
-		api.stats().then(setStats).catch(() => setFailed(true))
-	}, [])
+		if (!toast.visible) return
+		const timer = setTimeout(
+			() => setToast((current) => ({ ...current, visible: false })),
+			2600,
+		)
+		return () => clearTimeout(timer)
+	}, [toast])
 
-	let title = "Загрузка…"
-	if (failed) title = "Нет связи с сервером"
-	else if (stats) title = `${nLinks(stats.total_links)} ${inCollections(stats.total_collections)}`
+	const library = useLibrary(showToast)
+	const { filters, collections } = library
+	const collectionNames = useMemo(
+		() => new Map(collections.map((c) => [c.id, c.name])),
+		[collections],
+	)
+
+	const toggleFavorite = async (link: Link) => {
+		if (await library.toggleFavorite(link))
+			showToast(
+				link.favorite ? "Убрано из избранного" : "Добавлено в избранное",
+			)
+	}
+
+	const deleteLink = async (link: Link) => {
+		if (await library.deleteLink(link)) showToast("Ссылка удалена")
+	}
+
+	const showLibrary = library.status === "ready" && collections.length > 0
 
 	return (
-		<main className="mx-auto w-full max-w-[1520px] px-12 pt-[74px]">
-			<h1 className="text-[58px] leading-[1.04] font-semibold tracking-[-0.04em]">
-				<span className="block text-faint">Ваша библиотека</span>
-				{title}
-			</h1>
-		</main>
+		<div className="mx-auto w-full max-w-[1520px] px-(--page-pad) pt-4 pb-16 [--page-pad:20px] md:[--page-pad:48px]">
+			<Header
+				online={library.online}
+				search={filters.search}
+				onSearch={library.setSearch}
+			/>
+
+			<Hero
+				status={library.status}
+				stats={library.stats}
+				selected={library.selectedCollection}
+				onShowAll={library.showAllCollections}
+			/>
+
+			{showLibrary && (
+				<>
+					<Shelf
+						collections={collections}
+						links={library.allLinks}
+						selectedId={filters.collectionId}
+						onSelect={library.selectCollection}
+					/>
+					<Filters
+						favorite={filters.favorite}
+						onFavorite={library.setFavorite}
+						tags={library.tags}
+						activeTag={filters.tag}
+						onTag={library.toggleTag}
+						found={library.links?.length ?? null}
+						total={library.scopeCount}
+						hasFilters={library.hasFilters}
+						onReset={library.resetFilters}
+					/>
+				</>
+			)}
+
+			<LinkList
+				status={library.status}
+				links={library.links}
+				collectionNames={collectionNames}
+				filters={filters}
+				scopeCount={library.scopeCount}
+				onRetry={library.retry}
+				onReset={library.resetFilters}
+				onToggleFavorite={toggleFavorite}
+				onDelete={deleteLink}
+				onTag={library.toggleTag}
+			/>
+
+			<Toast {...toast} />
+		</div>
 	)
 }
