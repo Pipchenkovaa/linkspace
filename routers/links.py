@@ -34,9 +34,34 @@ def ensure_url_is_new(storage: Storage, normalized_url: str):
                 },
             )
 
+# Поиск: подстрока без учета регистра в названии, описании, url, тегах
+def matches_search(link: dict, query: str) -> bool:
+    fields = [link["title"], link["description"] or "", link["url"], *link["tags"]]
+    return any(query in field.lower() for field in fields)
+
+# Все ссылки, новые первыми; фильтры необязательные и складываются через &/и
 @router.get("", response_model=list[LinkOut])
-def list_links(storage: StorageDep):
-    links = sorted(storage.links.items, key=lambda link: link["id"], reverse=True)
+def list_links(
+    storage: StorageDep,
+    search: str | None = None,
+    tag: str | None = None,
+    collection_id: int | None = None,
+    favorite: bool | None = None,
+):
+    links = storage.links.items
+    if collection_id is not None:
+        find_collection(storage, collection_id)
+        links = [link for link in links if link["collection_id"] == collection_id]
+    if favorite is not None:
+        links = [link for link in links if link["favorite"] == favorite]
+    if tag and tag.strip():
+        tag = tag.strip().lower()
+        links = [link for link in links if tag in link["tags"]]
+    if search and search.strip():
+        query = search.strip().lower()
+        links = [link for link in links if matches_search(link, query)]
+        logger.info("Search: query=%r, results=%s", query, len(links))
+    links = sorted(links, key=lambda link: link["id"], reverse=True)
     return [link_out(link) for link in links]
 
 @router.post("", response_model=LinkOut, status_code=201)
