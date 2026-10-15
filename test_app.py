@@ -218,3 +218,12 @@ def test_stats(client, library):
         "total_collections": 2,
         "total_tags": 6,
     }
+
+# Фронт
+def test_cors_allows_only_frontend_origin(client):
+    preflight = {"Access-Control-Request-Method": "POST"}
+    allowed = client.options("/links", headers={"Origin": "http://localhost:3000", **preflight})
+    assert allowed.status_code == 200
+    assert allowed.headers["access-control-allow-origin"] == "http://localhost:3000"
+    unknown = client.options("/links", headers={"Origin": "https://evil.example", **preflight})
+    assert "access-control-allow-origin" not in unknown.headers
