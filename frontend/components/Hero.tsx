@@ -12,13 +12,13 @@ type Props = {
 
 export default function Hero({ status, stats, selected, onShowAll }: Props) {
 	let title: ReactNode = <span className="text-faint">Загрузка…</span>
-	if (status === "offline") title = "Оу нет, отсутствует связь с сервером"
+	if (status === "offline") title = "Эх, сервер не отвечает"
 	else if (stats && stats.total_collections === 0) title = "Пока пусто"
 	else if (selected)
 		title = (
 			<>
 				{selected.name}
-				<span className="text-faint"> · {nLinks(selected.link_count)}</span>
+				<span className="text-faint"> {nLinks(selected.link_count)}</span>
 			</>
 		)
 	else if (stats) title = `${nLinks(stats.total_links)} ${inCollections(stats.total_collections)}`
@@ -28,7 +28,7 @@ export default function Hero({ status, stats, selected, onShowAll }: Props) {
 			<h1 className="text-[34px] leading-[1.04] font-semibold tracking-[-0.04em] md:text-[44px] lg:text-[58px]">
 				{selected && status === "ready" ? (
 					<button onClick={onShowAll} title="Показать все коллекции" className="block text-left text-faint transition-colors hover:text-ink">
-						&lt; Главная
+						&lt; Моя библиотека
 					</button>
 				) : (
 					<span className="block text-faint">Моя библиотека</span>

@@ -9,7 +9,7 @@ import { StarIcon, StarOutlineIcon, TrashIcon } from "./icons"
 
 type Props = {
 	link: Link
-	collectionName: string | null // null — не показывать: коллекция итак открыта
+	collectionName: string | null // null — не показывать: коллекция и так открыта
 	activeTag: string | null
 	onToggleFavorite: () => void
 	onDelete: () => void

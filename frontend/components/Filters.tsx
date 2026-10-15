@@ -89,7 +89,7 @@ export default function Filters({
 					className={`${chip} ${chipIdle} text-ink`}
 					onClick={() => setExpanded(true)}
 				>
-					Ещё {hidden}
+					Еще {hidden}
 				</button>
 			)}
 			{expanded && tags.length > VISIBLE_TAGS && (
