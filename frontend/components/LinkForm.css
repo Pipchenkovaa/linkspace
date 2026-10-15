@@ -1,0 +1,271 @@
+.form-field {
+	margin-top: 16px;
+}
+
+.form-label {
+	display: block;
+	margin-bottom: 7px;
+	font-size: 13px;
+	font-weight: 500;
+	color: var(--soft);
+}
+
+.form-label i {
+	font-style: normal;
+	color: var(--danger);
+}
+
+.form-input {
+	width: 100%;
+	padding: 12px 14px;
+	border-radius: 14px;
+	font-size: 14.5px;
+	background: rgb(0 0 0 / 0.04);
+	box-shadow: inset 0 0 0 1px transparent;
+	outline: none;
+	transition:
+		background 0.2s,
+		box-shadow 0.2s;
+}
+
+.form-input:focus,
+.form-input:focus-within {
+	background: #fff;
+	box-shadow:
+		inset 0 0 0 1px rgb(0 0 0 / 0.14),
+		0 0 0 4px rgb(0 0 0 / 0.04);
+}
+
+.form-input.is-bad {
+	box-shadow: inset 0 0 0 1px rgb(217 68 58 / 0.6);
+}
+
+.form-input[readonly] {
+	color: var(--soft);
+	background: rgb(0 0 0 / 0.025);
+}
+
+textarea.form-input {
+	display: block;
+	height: 72px;
+	resize: none;
+}
+
+.form-error,
+.form-hint {
+	margin-top: 6px;
+	font-size: 12.5px;
+}
+
+.form-error {
+	color: var(--danger);
+}
+
+.form-hint {
+	color: var(--muted);
+}
+
+/* Коллекции в форме */
+.pill {
+	display: inline-flex;
+	align-items: center;
+	gap: 7px;
+	height: 34px;
+	padding: 0 13px 0 11px;
+	border-radius: 999px;
+	font-size: 13.5px;
+	font-weight: 500;
+	color: var(--soft);
+	background: rgb(0 0 0 / 0.045);
+	transition:
+		background 0.2s,
+		color 0.2s;
+}
+
+.pill i,
+.pill-input i {
+	width: 9px;
+	height: 9px;
+	border-radius: 50%;
+	background: var(--a);
+}
+
+.pill:hover {
+	color: var(--ink);
+	background: rgb(0 0 0 / 0.08);
+}
+
+.pill.is-on {
+	color: #fff;
+	background: var(--ink);
+}
+
+.pill em {
+	font-size: 11px;
+	font-style: normal;
+	opacity: 0.6;
+}
+
+.pill-new {
+	padding: 0 13px;
+	border: 1px dashed rgb(0 0 0 / 0.22);
+	background: transparent;
+}
+
+.pill-new:hover {
+	border-color: rgb(0 0 0 / 0.4);
+	background: rgb(255 255 255 / 0.6);
+}
+
+.pill-input {
+	display: inline-flex;
+	align-items: center;
+	gap: 7px;
+	height: 34px;
+	padding: 0 4px 0 11px;
+	border-radius: 999px;
+	background: #fff;
+	box-shadow:
+		inset 0 0 0 1px rgb(0 0 0 / 0.16),
+		0 0 0 4px rgb(0 0 0 / 0.04);
+}
+
+.pill-input input {
+	width: 180px;
+	font-size: 13.5px;
+	font-weight: 500;
+	background: transparent;
+	outline: none;
+}
+
+.pill-input button {
+	display: grid;
+	place-items: center;
+	width: 26px;
+	height: 26px;
+	border-radius: 50%;
+	color: #fff;
+	background: var(--ink);
+}
+
+/* Теги */
+.tag-box {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 6px;
+	min-height: 46px;
+	padding: 8px 10px;
+	cursor: text;
+}
+
+.tag-chip {
+	display: inline-flex;
+	align-items: center;
+	height: 26px;
+	padding: 0 4px 0 10px;
+	border-radius: 999px;
+	font-size: 12px;
+	font-weight: 500;
+	background: #fff;
+	box-shadow: inset 0 0 0 1px var(--line);
+}
+
+.tag-chip button {
+	width: 20px;
+	height: 20px;
+	margin-left: 3px;
+	border-radius: 50%;
+	font-size: 15px;
+	line-height: 1;
+	color: var(--muted);
+}
+
+.tag-chip button:hover {
+	color: var(--ink);
+	background: rgb(0 0 0 / 0.06);
+}
+
+.tag-box input {
+	flex: 1;
+	min-width: 120px;
+	padding: 4px;
+	font-size: 14.5px;
+	background: transparent;
+	outline: none;
+}
+
+/* Переключатель избранного */
+.form-switch-row {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-top: 18px;
+	padding: 10px 12px 10px 14px;
+	border-radius: 14px;
+	font-size: 14.5px;
+	font-weight: 500;
+	background: rgb(0 0 0 / 0.03);
+}
+
+.form-switch-row>span {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.switch {
+	position: relative;
+	width: 46px;
+	height: 28px;
+	border-radius: 999px;
+	background: rgb(0 0 0 / 0.14);
+	transition: background 0.25s;
+}
+
+.switch::after {
+	content: "";
+	position: absolute;
+	top: 3px;
+	left: 3px;
+	width: 22px;
+	height: 22px;
+	border-radius: 50%;
+	background: #fff;
+	box-shadow: 0 2px 6px rgb(0 0 0 / 0.25);
+	transition: transform 0.35s var(--spring);
+}
+
+.switch.is-on {
+	background: var(--star);
+}
+
+.switch.is-on::after {
+	transform: translateX(18px);
+}
+
+/* Поп-ап дубликата */
+.dup-icon {
+	display: grid;
+	place-items: center;
+	width: 52px;
+	height: 52px;
+	margin-bottom: 16px;
+	border-radius: 16px;
+	color: #fff;
+	background: var(--a);
+	box-shadow:
+		inset 0 1px 0 rgb(255 255 255 / 0.3),
+		0 10px 20px -10px color-mix(in oklab, var(--a) 70%, #000);
+}
+
+.dup-link {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	margin-top: 18px;
+	padding: 12px 14px;
+	border-radius: 18px;
+	background: #fff;
+	box-shadow: inset 0 0 0 1px var(--line);
+}

@@ -62,7 +62,7 @@ export default function Filters({
 					aria-pressed={favorite}
 					onClick={() => onFavorite(true)}
 				>
-					<StarIcon size={13} className="text-star" />
+					<StarIcon size={13} />
 					Избранное
 				</button>
 			</div>
@@ -113,7 +113,7 @@ export default function Filters({
 						</button>
 					</>
 				) : (
-					`${nLinks(total)} · сначала новые`
+					`${nLinks(total)} [сначала новые]`
 				)}
 			</div>
 		</section>

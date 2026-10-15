@@ -1,16 +1,18 @@
 "use client"
 
-import { useState, type CSSProperties } from "react"
+import { useEffect, useRef, useState, type CSSProperties } from "react"
 import { accent } from "@/lib/colors"
 import { shortUrl } from "@/lib/display"
 import type { Link } from "@/lib/types"
 import LinkTile from "./LinkTile"
-import { StarIcon, StarOutlineIcon, TrashIcon } from "./icons"
+import { PencilIcon, StarIcon, StarOutlineIcon, TrashIcon } from "./icons"
 
 type Props = {
 	link: Link
 	collectionName: string | null // null — не показывать: коллекция и так открыта
 	activeTag: string | null
+	highlighted: boolean
+	onEdit: () => void
 	onToggleFavorite: () => void
 	onDelete: () => void
 	onTag: (tag: string) => void
@@ -27,15 +29,24 @@ export default function LinkCard({
 	link,
 	collectionName,
 	activeTag,
+	highlighted,
+	onEdit,
 	onToggleFavorite,
 	onDelete,
 	onTag,
 }: Props) {
 	const [confirming, setConfirming] = useState(false)
+	const card = useRef<HTMLElement>(null)
+
+	useEffect(() => {
+		if (highlighted)
+			card.current?.scrollIntoView({ block: "center", behavior: "smooth" })
+	}, [highlighted])
 
 	return (
 		<article
-			className="group relative flex min-w-0 flex-col rounded-3xl bg-white/80 px-5 pt-[18px] pb-4 shadow-[inset_0_1px_0_#fff,inset_0_0_0_1px_rgb(255_255_255/0.7),var(--lift)] backdrop-blur-[14px]"
+			ref={card}
+			className={`group relative flex min-w-0 flex-col rounded-3xl bg-white/80 px-5 pt-[18px] pb-4 shadow-[inset_0_1px_0_#fff,inset_0_0_0_1px_rgb(255_255_255/0.7),var(--lift)] backdrop-blur-[14px] ${highlighted ? "link-flash" : ""}`}
 			style={{ "--a": accent(link.collection_id) } as CSSProperties}
 		>
 			<div className="flex items-center gap-3">
@@ -59,6 +70,14 @@ export default function LinkCard({
 				<div className="relative z-10 ml-auto flex gap-1.5">
 					<button
 						className={`${iconButton} ${iconIdle} ${hoverOnly}`}
+						onClick={onEdit}
+						title="Изменить"
+						aria-label="Изменить"
+					>
+						<PencilIcon size={15} />
+					</button>
+					<button
+						className={`${iconButton} ${iconIdle} ${hoverOnly}`}
 						onClick={() => setConfirming(true)}
 						title="Удалить"
 						aria-label="Удалить"
@@ -66,7 +85,7 @@ export default function LinkCard({
 						<TrashIcon size={15} />
 					</button>
 					<button
-						className={`${iconButton} w-[34px] ${link.favorite ? "bg-[#fff8e1] text-star shadow-[inset_0_0_0_1px_#fbe7a6]" : iconIdle}`}
+						className={`${iconButton} w-[34px] ${link.favorite ? "bg-linear-to-b from-[#303030] to-[#131313] text-white shadow-[inset_0_1px_0_rgb(255_255_255/0.18),0_6px_12px_-6px_rgb(0_0_0/0.5)]" : iconIdle}`}
 						onClick={onToggleFavorite}
 						title={link.favorite ? "Убрать из избранного" : "В избранное"}
 						aria-pressed={link.favorite}

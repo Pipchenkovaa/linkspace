@@ -15,7 +15,12 @@ export default function Header({ online, search, onSearch, onAdd }: Props) {
 	useEffect(() => {
 		const onKeyDown = (event: KeyboardEvent) => {
 			const target = event.target as HTMLElement
-			if (event.key === "/" && !target.closest("input, textarea")) {
+			const dialogOpen = document.querySelector("[aria-modal=true]")
+			if (
+				event.key === "/" &&
+				!dialogOpen &&
+				!target.closest("input, textarea")
+			) {
 				event.preventDefault()
 				input.current?.focus()
 			}
@@ -69,7 +74,7 @@ export default function Header({ online, search, onSearch, onAdd }: Props) {
 				onClick={onAdd}
 				disabled={!onAdd}
 				aria-label="Добавить ссылку"
-				title={onAdd ? undefined : "Форма добавления — следующий этап"}
+				title={onAdd ? undefined : "Сервер не отвечает"}
 			>
 				<PlusIcon size={14} />
 				<span className="hidden md:inline">Добавить ссылку</span>

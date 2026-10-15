@@ -11,7 +11,7 @@
 	inset: auto 0 0;
 	height: 176px;
 	clip-path: path("M0 46 Q0 22 24 22 H104 Q116 22 124 14 L132 6 Q138 0 150 0 H224 Q248 0 248 24 V152 Q248 176 224 176 H24 Q0 176 0 152 Z");
-	background: linear-gradient(165deg, color-mix(in oklab, var(--a) 24%, #f0f0f0), color-mix(in oklab, var(--a) 42%, #c8c8c8));
+	background: linear-gradient(165deg, color-mix(in oklab, var(--a) 24%, #f0f0f0), color-mix(in oklab, var(--a) 42%, #d8d8d8));
 }
 
 .folder-shade {
@@ -30,7 +30,7 @@
 	align-content: start;
 	width: 112px;
 	height: 140px;
-	border: 4px solid rgb(255 255 255 / 0.9);
+	border: 3.5px solid rgb(255 255 255 / 0.9);
 	border-radius: 16px;
 	box-shadow: 0 10px 22px -10px rgb(0 0 0 / 0.4);
 	color: #fff;
@@ -42,8 +42,8 @@
 .sheet-left {
 	left: 12px;
 	justify-items: start;
-	padding: 10px 12px;
-	font-size: 16px;
+	padding: 12px 16px;
+	font-size: 20px;
 	background: color-mix(in oklab, var(--a) 70%, #000);
 	transform: rotate(-9deg);
 }
@@ -53,16 +53,16 @@
 	bottom: 66px;
 	z-index: 1;
 	justify-items: center;
-	padding-top: 18px;
-	font-size: 26px;
+	padding-top: 16px;
+	font-size: 36px;
 	background: var(--a);
 }
 
 .sheet-right {
 	right: 12px;
 	justify-items: end;
-	padding: 10px 12px;
-	font-size: 16px;
+	padding: 12px 16px;
+	font-size: 20px;
 	color: color-mix(in oklab, var(--a) 75%, #000);
 	background: color-mix(in oklab, var(--a) 32%, #fff);
 	transform: rotate(9deg);
@@ -100,7 +100,7 @@
 	padding: 15px 16px 14px 18px;
 	clip-path: path("M0 24 Q0 0 24 0 H96 Q106 0 114 8 L124 18 Q130 26 142 26 H224 Q248 26 248 50 V100 Q248 124 224 124 H24 Q0 124 0 100 Z");
 	background: linear-gradient(180deg, color-mix(in oklab, var(--a) 7%, rgb(255 255 255 / 0.58)), color-mix(in oklab, var(--a) 4%, rgb(255 255 255 / 0.5)));
-	backdrop-filter: blur(16px) saturate(1.6);
+	backdrop-filter: blur(8px) saturate(4);
 	transition: background 0.35s, color 0.35s;
 }
 
@@ -118,13 +118,13 @@
 .folder-count {
 	font-size: 12.5px;
 	font-weight: 500;
-	color: color-mix(in oklab, var(--a) 70%, #333);
+	color: color-mix(in oklab, var(--a) 70%, #050505);
 }
 
 .folder-name {
 	margin-top: 12px;
 	overflow: hidden;
-	font-size: 17px;
+	font-size: 18px;
 	font-weight: 600;
 	letter-spacing: -0.015em;
 	text-overflow: ellipsis;
@@ -136,14 +136,14 @@
 	overflow: hidden;
 	font-size: 12px;
 	line-height: 28px;
-	color: #6f6f6f;
+	color: #050505;
 	text-overflow: ellipsis;
 	white-space: nowrap;
 }
 
 .folder.is-selected .folder-front {
 	color: #fff;
-	background: linear-gradient(180deg, rgb(30 30 32 / 0.8), rgb(14 14 16 / 0.9));
+	background: linear-gradient(180deg, rgb(30 30 32 / 0.5), rgb(14 14 16 / 0.85));
 }
 
 .folder.is-selected .folder-rim {
@@ -151,9 +151,9 @@
 }
 
 .folder.is-selected .folder-count {
-	color: color-mix(in oklab, var(--a) 55%, #fff);
+	color: color-mix(in oklab, var(--a) 20%, #fff);
 }
 
 .folder.is-selected .folder-recent {
-	color: rgb(255 255 255 / 0.55);
+	color: rgb(255 255 255 / 0.65);
 }

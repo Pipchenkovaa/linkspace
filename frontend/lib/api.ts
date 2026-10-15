@@ -84,3 +84,17 @@ export const api = {
 	deleteLink: (id: number) =>
 		request<void>(`/links/${id}`, { method: "DELETE" }),
 }
+
+export const isDuplicate = (
+	detail: ErrorDetail | null,
+): detail is DuplicateLinkDetail =>
+	typeof detail === "object" &&
+	detail !== null &&
+	!Array.isArray(detail) &&
+	"existing_link_id" in detail
+
+// 422: [{loc: ["body", "title"], ...}] → ["title"]
+export const invalidFields = (error: ApiError) =>
+	Array.isArray(error.detail)
+		? error.detail.map((item) => String(item.loc.at(-1)))
+		: []

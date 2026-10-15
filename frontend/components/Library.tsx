@@ -6,6 +6,7 @@ import { useLibrary } from "@/lib/useLibrary"
 import Filters from "./Filters"
 import Header from "./Header"
 import Hero from "./Hero"
+import LinkForm, { type FormMode } from "./LinkForm"
 import LinkList from "./LinkList"
 import Shelf from "./Shelf"
 import Toast from "./Toast"
@@ -28,6 +29,33 @@ export default function Library() {
 
 	const library = useLibrary(showToast)
 	const { filters, collections } = library
+	const [form, setForm] = useState<FormMode | null>(null)
+	const [highlightId, setHighlightId] = useState<number | null>(null)
+
+	useEffect(() => {
+		if (highlightId === null) return
+		const timer = setTimeout(() => setHighlightId(null), 3200)
+		return () => clearTimeout(timer)
+	}, [highlightId])
+
+	const openForm =
+		library.status === "offline"
+			? undefined
+			: () => setForm({ kind: "create", collectionId: filters.collectionId })
+
+	const saved = (link: Link, message: string) => {
+		setForm(null)
+		library.refresh()
+		showToast(message)
+		setHighlightId(link.id)
+	}
+
+	// «Показать ссылку» из поп-апа дубликата: открываем ее коллекцию и подсвечиваем карточку
+	const showExisting = (linkId: number, collectionId: number) => {
+		setForm(null)
+		library.openCollection(collectionId)
+		setHighlightId(linkId)
+	}
 	const collectionNames = useMemo(
 		() => new Map(collections.map((c) => [c.id, c.name])),
 		[collections],
@@ -52,6 +80,7 @@ export default function Library() {
 				online={library.online}
 				search={filters.search}
 				onSearch={library.setSearch}
+				onAdd={openForm}
 			/>
 
 			<Hero
@@ -89,12 +118,26 @@ export default function Library() {
 				collectionNames={collectionNames}
 				filters={filters}
 				scopeCount={library.scopeCount}
+				highlightId={highlightId}
+				onAdd={openForm}
+				onEdit={(link) => setForm({ kind: "edit", link })}
 				onRetry={library.retry}
 				onReset={library.resetFilters}
 				onToggleFavorite={toggleFavorite}
 				onDelete={deleteLink}
 				onTag={library.toggleTag}
 			/>
+
+			{form && (
+				<LinkForm
+					mode={form}
+					collections={collections}
+					links={library.allLinks}
+					onClose={() => setForm(null)}
+					onSaved={saved}
+					onShowExisting={showExisting}
+				/>
+			)}
 
 			<Toast {...toast} />
 		</div>

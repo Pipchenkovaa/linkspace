@@ -9,6 +9,9 @@ type Props = {
 	collectionNames: Map<number, string>
 	filters: Filters
 	scopeCount: number
+	highlightId: number | null
+	onAdd?: () => void
+	onEdit: (link: Link) => void
 	onRetry: () => void
 	onReset: () => void
 	onToggleFavorite: (link: Link) => void
@@ -22,6 +25,9 @@ export default function LinkList({
 	collectionNames,
 	filters,
 	scopeCount,
+	highlightId,
+	onAdd,
+	onEdit,
 	onRetry,
 	onReset,
 	onToggleFavorite,
@@ -48,23 +54,29 @@ export default function LinkList({
 
 	if (status === "loading" || links === null) return null
 
+	const addButton = onAdd && (
+		<button className="btn-dark" onClick={onAdd}>
+			Добавить ссылку
+		</button>
+	)
+
 	if (collectionNames.size === 0)
 		return (
-			<EmptyState title="У вас пока нет коллекций">
-				Создай первую, чтобы начать сохранять ссылки.
+			<EmptyState title="У тебя пока нет коллекций" action={addButton}>
+				Добавь первую ссылку и заведи для нее коллекцию прямо в форме.
 			</EmptyState>
 		)
 
 	if (links.length === 0) {
 		if (scopeCount === 0 && filters.collectionId !== null)
 			return (
-				<EmptyState title="В этой коллекции пока ничего нет">
+				<EmptyState title="В этой коллекции пока ничего нет" action={addButton}>
 					Добавь сюда первую ссылку.
 				</EmptyState>
 			)
 		if (scopeCount === 0)
 			return (
-				<EmptyState title="Здесь пока нет ссылок">
+				<EmptyState title="Здесь пока нет ссылок" action={addButton}>
 					Сохрани первый полезный ресурс.
 				</EmptyState>
 			)
@@ -100,6 +112,8 @@ export default function LinkList({
 							: null
 					}
 					activeTag={filters.tag}
+					highlighted={link.id === highlightId}
+					onEdit={() => onEdit(link)}
 					onToggleFavorite={() => onToggleFavorite(link)}
 					onDelete={() => onDelete(link)}
 					onTag={onTag}

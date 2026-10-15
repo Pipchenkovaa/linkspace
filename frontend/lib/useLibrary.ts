@@ -173,7 +173,10 @@ export function useLibrary(onError: (message: string) => void) {
 		setSearch: (search: string) => setFilters((f) => ({ ...f, search })),
 		resetFilters: () =>
 			setFilters((f) => ({ ...NO_FILTERS, collectionId: f.collectionId })),
+		openCollection: (id: number) =>
+			setFilters({ ...NO_FILTERS, collectionId: id }),
 
+		refresh: reload,
 		retry,
 		toggleFavorite,
 		deleteLink,
