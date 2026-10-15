@@ -10,7 +10,6 @@ from storage import Storage
 
 VERSION = "1.0.0"
 LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO").strip().upper()
-# Адреса фронта, которым браузер разрешит обращаться к API (через запятую)
 CORS_ORIGINS = [
     origin.strip()
     for origin in os.getenv("CORS_ORIGINS", "http://localhost:3000,http://127.0.0.1:3000").split(",")
@@ -46,7 +45,6 @@ def health():
 def version():
     return {"version": VERSION}
 
-# CORS: фронт работает на порту :3000; без этого браузер заблокирует его запросы к API
 app.add_middleware(
     CORSMiddleware,
     allow_origins=CORS_ORIGINS,
