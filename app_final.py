@@ -4,7 +4,7 @@ import os
 from contextlib import asynccontextmanager
 from pathlib import Path
 from fastapi import FastAPI
-from routers import collections
+from routers import collections, links
 from storage import Storage
 
 VERSION = "1.0.0"
@@ -16,7 +16,6 @@ logging.basicConfig(
 )
 logger = logging.getLogger("linkspace")
 
-# DATA_DIR читаем при запуске, а не при импорте файла (тесты смогут подставить временную папку перед стартом приложения)
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     data_dir = Path(os.getenv("DATA_DIR", "data"))
@@ -34,13 +33,12 @@ app = FastAPI(
 
 @app.get("/health", tags=["system"])
 def health():
-    """Проверка, что сервис жив."""
     return {"status": "ok"}
 
 @app.get("/version", tags=["system"])
 def version():
-    """Версия приложения."""
     return {"version": VERSION}
 
 # Подключение маршрутов из /routers
 app.include_router(collections.router)
+app.include_router(links.router)
