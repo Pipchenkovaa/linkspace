@@ -1,0 +1,41 @@
+@import "tailwindcss";
+
+/* Цвета из прототипа docs/design/linkspace-prototype.html */
+:root {
+	--panel: #f2f2f2;
+	--ink: #151515;
+	--soft: #6b6b6b;
+	--muted: #9c9c9c;
+	--faint: #a8a8a8;
+	--line: rgb(0 0 0 / 0.07);
+	--star: #f2b705;
+	--online: #2fbf5b;
+	--danger: #d9443a;
+}
+
+/* Токены → классы Tailwind: bg-panel, text-soft, border-line, shadow-glass, ease-spring… */
+@theme inline {
+	--color-panel: var(--panel);
+	--color-ink: var(--ink);
+	--color-soft: var(--soft);
+	--color-muted: var(--muted);
+	--color-faint: var(--faint);
+	--color-line: var(--line);
+	--color-star: var(--star);
+	--color-online: var(--online);
+	--color-danger: var(--danger);
+	--font-sans: var(--font-geist-sans);
+	--font-mono: var(--font-geist-mono);
+}
+
+@theme {
+	--ease-spring: cubic-bezier(0.3, 0.9, 0.3, 1.15);
+	--shadow-lift: 0 1px 2px rgb(0 0 0 / 0.04), 0 14px 32px -16px rgb(0 0 0 / 0.2);
+	--shadow-glass: inset 0 1px 0 rgb(255 255 255 / 0.95), inset 0 0 0 1px rgb(255 255 255 / 0.6), 0 1px 2px rgb(0 0 0 / 0.04), 0 14px 32px -16px rgb(0 0 0 / 0.2);
+}
+
+body {
+	background: var(--panel);
+	color: var(--ink);
+	font-family: var(--font-geist-sans), system-ui, sans-serif;
+}
