@@ -9,7 +9,7 @@
 | CI                | https://github.com/Pipchenkovaa/linkspace/actions                                       |
 | Server OS         | Ubuntu 24.04 LTS                                                                        |
 | Hosting type      | VPS, провайдер: _заполнить_                                                             |
-| Public IP         | _заполнить сервера_                                                                     |
+| Public IP         | _заполнить_                                                                             |
 | Application port  | API — 8000, интерфейс — 3000; оба слушают только 127.0.0.1                              |
 | Public URL        | https://_заполнить_                                                                     |
 | Process manager   | systemd: `linkspace-api.service`, `linkspace-web.service`                               |
@@ -36,5 +36,3 @@
       /     → Next.js 127.0.0.1:3000
   → оба процесса запускает и перезапускает systemd на Ubuntu Server
 ```
-
-Как развернуть: [docs/deploy.md](docs/deploy.md).
