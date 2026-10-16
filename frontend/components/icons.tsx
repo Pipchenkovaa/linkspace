@@ -99,3 +99,18 @@ export const CopyIcon = (props: IconProps) => (
 		<path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2" />
 	</Icon>
 )
+
+export const DotsIcon = (props: SVGProps<SVGSVGElement>) => (
+	<svg
+		width="16"
+		height="4"
+		viewBox="0 0 16 4"
+		fill="currentColor"
+		aria-hidden
+		{...props}
+	>
+		<circle cx="2" cy="2" r="1.7" />
+		<circle cx="8" cy="2" r="1.7" />
+		<circle cx="14" cy="2" r="1.7" />
+	</svg>
+)

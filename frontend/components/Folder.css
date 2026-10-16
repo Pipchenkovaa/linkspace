@@ -157,3 +157,87 @@
 .folder.is-selected .folder-recent {
 	color: rgb(255 255 255 / 0.65);
 }
+
+.folder-bottom {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	margin-top: auto;
+}
+
+.folder-bottom .folder-recent {
+	flex: 1;
+	min-width: 0;
+	margin-top: 0;
+}
+
+.folder-more {
+	display: grid;
+	flex: none;
+	place-items: center;
+	width: 40px;
+	height: 28px;
+	border-radius: 999px;
+	color: var(--ink);
+	background: rgb(255 255 255 / 0.6);
+	box-shadow:
+		inset 0 1px 0 #fff,
+		inset 0 0 0 1px rgb(0 0 0 / 0.06),
+		0 4px 10px -6px rgb(0 0 0 / 0.3);
+	transition: background 0.2s;
+}
+
+.folder-more:hover,
+.folder-more[aria-expanded="true"] {
+	background: #fff;
+}
+
+.folder.is-selected .folder-more {
+	color: #fff;
+	background: rgb(255 255 255 / 0.12);
+	box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.2);
+}
+
+.folder.is-selected .folder-more:hover,
+.folder.is-selected .folder-more[aria-expanded="true"] {
+	background: rgb(255 255 255 / 0.22);
+}
+
+/* создание и переименование прямо в папке */
+.folder-input {
+	width: 100%;
+	height: 40px;
+	margin-top: 8px;
+	padding: 0 12px;
+	border-radius: 12px;
+	font-size: 15px;
+	font-weight: 500;
+	background: rgb(255 255 255 / 0.85);
+	box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.08);
+	outline: none;
+	transition: box-shadow 0.2s;
+}
+
+.folder-input:focus {
+	box-shadow:
+		inset 0 0 0 1px rgb(0 0 0 / 0.18),
+		0 0 0 4px rgb(255 255 255 / 0.6);
+}
+
+.folder-input[readonly] {
+	color: var(--soft);
+}
+
+.folder-hint {
+	margin-top: auto;
+	overflow: hidden;
+	font-size: 11.5px;
+	color: #777;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.folder-hint.is-error {
+	font-weight: 500;
+	color: var(--danger);
+}

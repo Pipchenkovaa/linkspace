@@ -1,8 +1,9 @@
 "use client"
 
 import { useCallback, useEffect, useMemo, useState } from "react"
-import type { Link } from "@/lib/types"
+import type { Collection, Link } from "@/lib/types"
 import { useLibrary } from "@/lib/useLibrary"
+import DeleteCollectionDialog from "./DeleteCollectionDialog"
 import Filters from "./Filters"
 import Header from "./Header"
 import Hero from "./Hero"
@@ -49,8 +50,6 @@ export default function Library() {
 		showToast(message)
 		setHighlightId(link.id)
 	}
-
-	// «Показать ссылку» из поп-апа дубликата: открываем ее коллекцию и подсвечиваем карточку
 	const showExisting = (linkId: number, collectionId: number) => {
 		setForm(null)
 		library.openCollection(collectionId)
@@ -60,18 +59,41 @@ export default function Library() {
 		() => new Map(collections.map((c) => [c.id, c.name])),
 		[collections],
 	)
-
 	const toggleFavorite = async (link: Link) => {
 		if (await library.toggleFavorite(link))
 			showToast(
 				link.favorite ? "Убрано из избранного" : "Добавлено в избранное",
 			)
 	}
-
 	const deleteLink = async (link: Link) => {
 		if (await library.deleteLink(link)) showToast("Ссылка удалена")
 	}
+	const [deletingId, setDeletingId] = useState<number | null>(null)
+	const deleting = collections.find((c) => c.id === deletingId) ?? null
+	const createCollection = async (name: string) => {
+		const created = await library.createCollection(name)
+		showToast(`Коллекция «${created.name}» создана`)
+		return created
+	}
 
+	const renameCollection = async (id: number, name: string) => {
+		const renamed = await library.renameCollection(id, name)
+		showToast("Коллекция переименована")
+		return renamed
+	}
+
+	const deleteCollection = async (collection: Collection, moveTo?: number) => {
+		await library.deleteCollection(collection.id, moveTo)
+		setDeletingId(null)
+		const target = collections.find((c) => c.id === moveTo)
+		const moved =
+			collection.link_count === 1 ? "ссылка перенесена" : "ссылки перенесены"
+		showToast(
+			target
+				? `Коллекция удалена, ${moved} в «${target.name}»`
+				: `Коллекция «${collection.name}» удалена`,
+		)
+	}
 	const showLibrary = library.status === "ready" && collections.length > 0
 
 	return (
@@ -97,6 +119,9 @@ export default function Library() {
 						links={library.allLinks}
 						selectedId={filters.collectionId}
 						onSelect={library.selectCollection}
+						onCreate={createCollection}
+						onRename={renameCollection}
+						onDelete={(collection) => setDeletingId(collection.id)}
 					/>
 					<Filters
 						favorite={filters.favorite}
@@ -136,6 +161,16 @@ export default function Library() {
 					onClose={() => setForm(null)}
 					onSaved={saved}
 					onShowExisting={showExisting}
+				/>
+			)}
+
+			{deleting && (
+				<DeleteCollectionDialog
+					collection={deleting}
+					collections={collections}
+					onClose={() => setDeletingId(null)}
+					onDelete={(moveTo) => deleteCollection(deleting, moveTo)}
+					onRefresh={library.refresh}
 				/>
 			)}
 

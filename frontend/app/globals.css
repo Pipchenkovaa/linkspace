@@ -94,6 +94,17 @@
 	}
 }
 
+.btn-danger {
+	background: linear-gradient(180deg, #e5574d, #c3352c);
+	box-shadow:
+		inset 0 1px 0 rgb(255 255 255 / 0.25),
+		0 10px 20px -10px rgb(195 53 44 / 0.7);
+}
+
+.btn-danger:not(:disabled):hover {
+	filter: brightness(1.1);
+}
+
 @keyframes link-flash {
 	50% {
 		box-shadow:

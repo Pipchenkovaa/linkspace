@@ -126,6 +126,25 @@ export function useLibrary(onError: (message: string) => void) {
 	const toggleFavorite = (link: Link) =>
 		run(() => api.updateLink(link.id, { favorite: !link.favorite }))
 	const deleteLink = (link: Link) => run(() => api.deleteLink(link.id))
+
+	// ошибки (409, 422, нет сети) показывает тот, кто вызвал
+	const createCollection = async (name: string) => {
+		const created = await api.createCollection(name)
+		reload()
+		return created
+	}
+	const renameCollection = async (id: number, name: string) => {
+		const renamed = await api.renameCollection(id, name)
+		reload()
+		return renamed
+	}
+	const deleteCollection = async (id: number, moveTo?: number) => {
+		await api.deleteCollection(id, moveTo)
+		setFilters((f) =>
+			f.collectionId === id ? { ...f, collectionId: moveTo ?? null } : f,
+		)
+		reload()
+	}
 	const selectedCollection =
 		collections.find((c) => c.id === filters.collectionId) ?? null
 	const scopeLinks = useMemo(
@@ -180,5 +199,8 @@ export function useLibrary(onError: (message: string) => void) {
 		retry,
 		toggleFavorite,
 		deleteLink,
+		createCollection,
+		renameCollection,
+		deleteCollection,
 	}
 }
