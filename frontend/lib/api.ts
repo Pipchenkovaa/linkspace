@@ -40,6 +40,9 @@ async function request<T>(path: string, init: RequestInit = {}): Promise<T> {
 	} catch {
 		throw new ApiError(0, "Сервер не отвечает")
 	}
+	// 502–504 отдает Nginx, когда API за ним не отвечает: для фронта это та же недоступность
+	if (response.status >= 502 && response.status <= 504)
+		throw new ApiError(0, "Сервер не отвечает")
 	if (response.status === 204) return undefined as T
 	const body = await response.json().catch(() => null)
 	if (!response.ok) throw new ApiError(response.status, body?.detail ?? null)

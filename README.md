@@ -82,6 +82,13 @@ npm start
 сервер снова отвечает, библиотека загружается сама. Дизайн-прототип интерфейса:
 [docs/design/linkspace-prototype.html](docs/design/linkspace-prototype.html).
 
+## Деплой
+
+Сервер на Ubuntu 24.04: Nginx с HTTPS и паролем, два сервиса systemd для API и
+интерфейса. Пошаговая инструкция — [docs/deploy.md](docs/deploy.md), шаблоны
+конфигов — в папке `deploy/`, паспорт проекта —
+[project_passport.md](project_passport.md).
+
 ## Проверка и логи
 
 ```bash

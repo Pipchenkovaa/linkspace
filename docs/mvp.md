@@ -471,8 +471,11 @@ linkspace/
 ├── .gitignore
 ├── .env.example
 ├── .github/workflows/ci.yml
+├── project_passport.md [паспорт проекта]
+├── deploy/ [юниты systemd, конфиг Nginx, скрипт обновления]
 ├── docs/
 │   ├── mvp.md
+│   ├── deploy.md [инструкция по деплою]
 │   ├── screen.png
 │   └── design/linkspace-prototype.html
 ├── data/ [не в Git]
@@ -501,6 +504,20 @@ linkspace/
   восстановления связи библиотека загружается сама.
 - Запросы и разбор ошибок собраны в `lib/api.ts`, состояние библиотеки и фильтры
   — в `lib/useLibrary.ts`.
+
+## Деплой
+
+- Ubuntu 24.04, оба процесса запускает и перезапускает systemd: `linkspace-api`
+  (uvicorn, 127.0.0.1:8000) и `linkspace-web` (Next.js, 127.0.0.1:3000).
+- Nginx принимает HTTPS на 443 и спрашивает логин и пароль: `/api/` уходит в
+  API, остальное — в интерфейс. Без пароля открыт только `/api/health`.
+- Фронт собирается с `NEXT_PUBLIC_API_URL=/api`, поэтому интерфейс и API живут
+  на одном адресе и CORS не нужен.
+- Данные лежат в `/var/lib/linkspace`, отдельно от кода.
+- Если Nginx не может достучаться до API (`502`–`504`), фронт показывает тот же
+  экран «Эх, сервер не отвечает...», что и при выключенном API на компьютере.
+
+Пошаговая инструкция: [deploy.md](deploy.md).
 
 ## CI
 
