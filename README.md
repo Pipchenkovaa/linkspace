@@ -112,6 +112,18 @@ python -m pytest -v
 артефакт `linkspace-app` (вкладка
 [Actions](https://github.com/Pipchenkovaa/linkspace/actions)).
 
+Параллельно задача `frontend` проверяет интерфейс: ставит зависимости по
+`package-lock.json` (`npm ci`), запускает линтер и собирает проект. Сборка
+заодно проверяет типы TypeScript, поэтому ошибка в коде фронта тоже делает CI
+красным. Локально то же самое:
+
+```bash
+cd frontend
+npm ci
+npm run lint
+npm run build
+```
+
 ## Диагностика
 
 | Признак                                                   | Действия                                                                                                      |

@@ -441,11 +441,19 @@ linkspace/
 
 ## CI
 
-GitHub Actions запускается при каждом `push` и `pull request`:
+GitHub Actions запускается при каждом `push` и `pull request`. Две задачи идут параллельно.
+
+**test** — бэкенд:
 
 1. Устанавливает зависимости из `requirements-dev.txt`.
 2. Запускает `python -m pytest -v`.
 3. Если тесты прошли, сохраняет artifact `linkspace-app` с файлами бэкенда: `app_final.py`, `routers/`, `models.py`, `normalize.py`, `storage.py`, `requirements.txt`, `README.md`, `.env.example`.
+
+**frontend** — интерфейс:
+
+1. Ставит Node.js 24 и зависимости по `frontend/package-lock.json` (`npm ci`).
+2. Запускает линтер: `npm run lint`.
+3. Собирает проект: `npm run build`. Сборка заодно проверяет типы TypeScript и падает на любой ошибке.
 
 ## Тесты
 
