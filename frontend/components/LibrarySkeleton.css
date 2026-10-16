@@ -1,0 +1,66 @@
+.skeleton {
+	animation: skeleton-in 0.3s ease 0.15s both;
+}
+
+.skeleton .skeleton {
+	animation: none;
+}
+
+.skeleton .shelf {
+	overflow: hidden;
+}
+
+.skeleton-bar,
+.skeleton-folder::before {
+	display: block;
+	background: linear-gradient(90deg, rgb(0 0 0 / 0.045) 30%, rgb(0 0 0 / 0.08) 50%, rgb(0 0 0 / 0.045) 70%);
+	background-size: 300% 100%;
+	animation: skeleton-shine 1.6s ease-in-out infinite;
+}
+
+.skeleton-folder {
+	position: relative;
+	flex: 0 0 248px;
+	height: 236px;
+}
+
+.skeleton-folder::before {
+	content: "";
+	position: absolute;
+	inset: auto 0 0;
+	height: 176px;
+	clip-path: path("M0 46 Q0 22 24 22 H104 Q116 22 124 14 L132 6 Q138 0 150 0 H224 Q248 0 248 24 V152 Q248 176 224 176 H24 Q0 176 0 152 Z");
+}
+
+.skeleton-card {
+	display: flex;
+	flex-direction: column;
+	min-height: 168px;
+	padding: 18px 20px 16px;
+	border-radius: 24px;
+	background: rgb(255 255 255 / 0.6);
+	box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.7);
+}
+
+@keyframes skeleton-in {
+	from {
+		opacity: 0;
+	}
+}
+
+@keyframes skeleton-shine {
+	from {
+		background-position: 100% 0;
+	}
+
+	to {
+		background-position: 0 0;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.skeleton-bar,
+	.skeleton-folder::before {
+		animation: none;
+	}
+}

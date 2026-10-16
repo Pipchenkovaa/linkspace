@@ -6,6 +6,7 @@ import { useLibrary } from "@/lib/useLibrary"
 import DeleteCollectionDialog from "./DeleteCollectionDialog"
 import Filters from "./Filters"
 import Header from "./Header"
+import LibrarySkeleton from "./LibrarySkeleton"
 import Hero from "./Hero"
 import LinkForm, { type FormMode } from "./LinkForm"
 import LinkList from "./LinkList"
@@ -40,9 +41,9 @@ export default function Library() {
 	}, [highlightId])
 
 	const openForm =
-		library.status === "offline"
-			? undefined
-			: () => setForm({ kind: "create", collectionId: filters.collectionId })
+		library.status === "ready"
+			? () => setForm({ kind: "create", collectionId: filters.collectionId })
+			: undefined
 
 	const saved = (link: Link, message: string) => {
 		setForm(null)
@@ -94,7 +95,10 @@ export default function Library() {
 				: `Коллекция «${collection.name}» удалена`,
 		)
 	}
-	const showLibrary = library.status === "ready" && collections.length > 0
+	const retry = async () => {
+		if (!(await library.retry())) showToast("Сервер все еще не отвечает")
+	}
+	const ready = library.status === "ready"
 
 	return (
 		<div className="mx-auto w-full max-w-[1520px] px-(--page-pad) pt-4 pb-16 [--page-pad:20px] md:[--page-pad:48px]">
@@ -112,29 +116,31 @@ export default function Library() {
 				onShowAll={library.showAllCollections}
 			/>
 
-			{showLibrary && (
-				<>
-					<Shelf
-						collections={collections}
-						links={library.allLinks}
-						selectedId={filters.collectionId}
-						onSelect={library.selectCollection}
-						onCreate={createCollection}
-						onRename={renameCollection}
-						onDelete={(collection) => setDeletingId(collection.id)}
-					/>
-					<Filters
-						favorite={filters.favorite}
-						onFavorite={library.setFavorite}
-						tags={library.tags}
-						activeTag={filters.tag}
-						onTag={library.toggleTag}
-						found={library.links?.length ?? null}
-						total={library.scopeCount}
-						hasFilters={library.hasFilters}
-						onReset={library.resetFilters}
-					/>
-				</>
+			{library.status === "loading" && <LibrarySkeleton />}
+
+			{ready && (
+				<Shelf
+					collections={collections}
+					links={library.allLinks}
+					selectedId={filters.collectionId}
+					onSelect={library.selectCollection}
+					onCreate={createCollection}
+					onRename={renameCollection}
+					onDelete={(collection) => setDeletingId(collection.id)}
+				/>
+			)}
+			{ready && library.scopeCount > 0 && (
+				<Filters
+					favorite={filters.favorite}
+					onFavorite={library.setFavorite}
+					tags={library.tags}
+					activeTag={filters.tag}
+					onTag={library.toggleTag}
+					found={library.links?.length ?? null}
+					total={library.scopeCount}
+					hasFilters={library.hasFilters}
+					onReset={library.resetFilters}
+				/>
 			)}
 
 			<LinkList
@@ -146,7 +152,7 @@ export default function Library() {
 				highlightId={highlightId}
 				onAdd={openForm}
 				onEdit={(link) => setForm({ kind: "edit", link })}
-				onRetry={library.retry}
+				onRetry={retry}
 				onReset={library.resetFilters}
 				onToggleFavorite={toggleFavorite}
 				onDelete={deleteLink}

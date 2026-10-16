@@ -5,7 +5,7 @@ import { ApiError } from "@/lib/api"
 import type { Collection, Link } from "@/lib/types"
 import Folder, { type FolderEdit } from "./Folder"
 import FolderMenu, { MENU_SIZE } from "./FolderMenu"
-import { ChevronLeftIcon, ChevronRightIcon } from "./icons"
+import { ChevronLeftIcon, ChevronRightIcon, PlusIcon } from "./icons"
 import "./Shelf.css"
 
 type Props = {
@@ -238,6 +238,19 @@ export default function Shelf({
 						edit={draft?.id === collection.id ? edit : undefined}
 					/>
 				))}
+				{collections.length === 0 && !creating && (
+					<button
+						type="button"
+						className="folder-add"
+						data-new-collection
+						onClick={startNew}
+					>
+						<span>
+							<PlusIcon />
+						</span>
+						Создать первую коллекцию
+					</button>
+				)}
 				{creating && (
 					<Folder
 						key="new"

@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react"
 import { LinkIcon, PlusIcon, SearchIcon } from "./icons"
 type Props = {
-	online: boolean
+	online: boolean | null
 	search: string
 	onSearch: (value: string) => void
 	onAdd?: () => void
@@ -40,12 +40,16 @@ export default function Header({ online, search, onSearch, onAdd }: Props) {
 
 			<span
 				title="GET /health раз в 30 секунд"
-				className={`ml-1.5 hidden h-8 items-center gap-2 rounded-full bg-white/70 px-3 text-[12.5px] font-medium shadow-[inset_0_0_0_1px_var(--line)] md:inline-flex ${online ? "text-soft" : "text-danger"}`}
+				className={`ml-1.5 hidden h-8 items-center gap-2 rounded-full bg-white/70 px-3 text-[12.5px] font-medium shadow-[inset_0_0_0_1px_var(--line)] md:inline-flex ${online === false ? "text-danger" : "text-soft"}`}
 			>
 				<b
-					className={`size-2 rounded-full transition-colors ${online ? "bg-online shadow-[0_0_0_3px_rgb(47_191_91/0.18)]" : "bg-danger shadow-[0_0_0_3px_rgb(217_68_58/0.18)]"}`}
+					className={`size-2 rounded-full transition-colors ${online === null ? "bg-faint" : online ? "bg-online shadow-[0_0_0_3px_rgb(47_191_91/0.18)]" : "bg-danger shadow-[0_0_0_3px_rgb(217_68_58/0.18)]"}`}
 				/>
-				{online ? "API работает" : "API недоступен"}
+				{online === null
+					? "Проверяю API"
+					: online
+						? "API работает"
+						: "API недоступен"}
 			</span>
 
 			<div className="flex-1" />
@@ -74,7 +78,7 @@ export default function Header({ online, search, onSearch, onAdd }: Props) {
 				onClick={onAdd}
 				disabled={!onAdd}
 				aria-label="Добавить ссылку"
-				title={onAdd ? undefined : "Сервер не отвечает"}
+				title={!onAdd && online === false ? "Сервер не отвечает" : undefined}
 			>
 				<PlusIcon size={14} />
 				<span className="hidden md:inline">Добавить ссылку</span>

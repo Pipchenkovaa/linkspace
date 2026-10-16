@@ -1,6 +1,8 @@
+import { useState } from "react"
 import type { Link } from "@/lib/types"
 import type { Filters, LibraryStatus } from "@/lib/useLibrary"
 import EmptyState from "./EmptyState"
+import { CardsSkeleton } from "./LibrarySkeleton"
 import LinkCard from "./LinkCard"
 
 type Props = {
@@ -12,7 +14,7 @@ type Props = {
 	highlightId: number | null
 	onAdd?: () => void
 	onEdit: (link: Link) => void
-	onRetry: () => void
+	onRetry: () => Promise<void>
 	onReset: () => void
 	onToggleFavorite: (link: Link) => void
 	onDelete: (link: Link) => void
@@ -38,21 +40,18 @@ export default function LinkList({
 		return (
 			<EmptyState
 				kind="offline"
-				title="Сервер не отвечает"
-				action={
-					<button className="btn-dark" onClick={onRetry}>
-						Повторить
-					</button>
-				}
+				title="Не удалось подключиться к API"
+				action={<RetryButton onRetry={onRetry} />}
 			>
-				Не удалось загрузить библиотеку. Проверь, что API запущен:{" "}
-				<code className="rounded-lg bg-black/5 px-2 py-0.5 font-mono text-[12.5px] text-ink">
+				Проверь, что бэкенд запущен:
+				<code className="mx-auto mt-2.5 block w-fit max-w-full overflow-x-auto rounded-lg bg-black/5 px-2.5 py-1 font-mono text-[12.5px] whitespace-nowrap text-ink">
 					uvicorn app_final:app --env-file .env
 				</code>
 			</EmptyState>
 		)
 
-	if (status === "loading" || links === null) return null
+	if (status === "loading") return null
+	if (links === null) return <CardsSkeleton />
 
 	const addButton = onAdd && (
 		<button className="btn-dark" onClick={onAdd}>
@@ -62,8 +61,9 @@ export default function LinkList({
 
 	if (collectionNames.size === 0)
 		return (
-			<EmptyState title="У тебя пока нет коллекций" action={addButton}>
-				Добавь первую ссылку и заведи для нее коллекцию прямо в форме.
+			<EmptyState title="Здесь пока нет ссылок" action={addButton}>
+				Сохрани первый полезный ресурс. Коллекцию для него можно создать прямо в
+				форме или на полке выше.
 			</EmptyState>
 		)
 
@@ -120,5 +120,22 @@ export default function LinkList({
 				/>
 			))}
 		</section>
+	)
+}
+
+function RetryButton({ onRetry }: { onRetry: () => Promise<void> }) {
+	const [busy, setBusy] = useState(false)
+	return (
+		<button
+			className="btn-dark"
+			disabled={busy}
+			onClick={async () => {
+				setBusy(true)
+				await onRetry()
+				setBusy(false)
+			}}
+		>
+			{busy ? "Проверяю…" : "Повторить"}
+		</button>
 	)
 }

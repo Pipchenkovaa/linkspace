@@ -23,7 +23,7 @@ const iconButton =
 const iconIdle =
 	"bg-white/70 text-[#b3b3b3] shadow-[inset_0_0_0_1px_var(--line)] hover:bg-white hover:text-ink"
 const hoverOnly =
-	"w-0 -ml-1.5 opacity-0 group-hover:ml-0 group-hover:w-[34px] group-hover:opacity-100 group-focus-within:ml-0 group-focus-within:w-[34px] group-focus-within:opacity-100"
+	"w-0 -ml-1.5 opacity-0 group-hover:ml-0 group-hover:w-[34px] group-hover:opacity-100 group-focus-within:ml-0 group-focus-within:w-[34px] group-focus-within:opacity-100 pointer-coarse:ml-0 pointer-coarse:w-[34px] pointer-coarse:opacity-100"
 
 export default function LinkCard({
 	link,

@@ -31,7 +31,7 @@
 	--shadow-lift: var(--lift);
 	--ease-spring: var(--spring);
 	--font-sans: var(--font-geist-sans);
-	--font-mono: var(--font-geist-mono);
+	--font-mono: var(--font-geist-mono), ui-monospace, monospace;
 }
 
 @utility glass {

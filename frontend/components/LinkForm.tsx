@@ -58,8 +58,11 @@ export default function LinkForm({
 	onShowExisting,
 }: Props) {
 	const editing = mode.kind === "edit" ? mode.link : null
+	const onlyCollection = collections.length === 1 ? collections[0].id : null
 	const initialId =
-		mode.kind === "edit" ? mode.link.collection_id : mode.collectionId
+		mode.kind === "edit"
+			? mode.link.collection_id
+			: (mode.collectionId ?? onlyCollection)
 
 	const [url, setUrl] = useState(editing?.url ?? "")
 	const [title, setTitle] = useState(editing?.title ?? "")

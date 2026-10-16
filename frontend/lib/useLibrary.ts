@@ -23,7 +23,7 @@ const isOffline = (error: unknown) =>
 
 export function useLibrary(onError: (message: string) => void) {
 	const [status, setStatus] = useState<LibraryStatus>("loading")
-	const [online, setOnline] = useState(true)
+	const [online, setOnline] = useState<boolean | null>(null) // null — еще не проверяли
 	const [collections, setCollections] = useState<Collection[]>([])
 	const [allLinks, setAllLinks] = useState<Link[]>([])
 	const [stats, setStats] = useState<Stats | null>(null)
@@ -108,9 +108,14 @@ export function useLibrary(onError: (message: string) => void) {
 		return () => clearInterval(timer)
 	}, [])
 
-	const retry = () => {
-		setStatus("loading")
-		reload()
+	const retry = async () => {
+		try {
+			await api.health()
+			reload()
+			return true
+		} catch {
+			return false
+		}
 	}
 	const run = async (action: () => Promise<unknown>) => {
 		try {
