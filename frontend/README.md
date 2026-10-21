@@ -4,7 +4,7 @@
 
 ## Запуск
 
-Backend должен быть запущен перед фронтендом.
+P.S. Сначала необходимо запустить backend, а потом уже frontend.
 
 ```bash
 npm install
@@ -28,11 +28,11 @@ NEXT_PUBLIC_API_URL=http://127.0.0.1:8000
 
 ```text
 frontend/
-├── app/              # страницы, layout и обработка ошибок
-├── components/       # UI-компоненты библиотеки
+├── app/
+├── components/
 └── lib/
-    ├── api.ts        # запросы к FastAPI и разбор ошибок
-    └── useLibrary.ts # состояние библиотеки и основные действия
+    ├── api.ts
+    └── useLibrary.ts
 ```
 
 `lib/api.ts` — API layer: запросы к backend и обработка ответов и ошибок.
