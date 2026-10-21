@@ -1,38 +1,42 @@
 # Паспорт проекта LinkSpace
 
-| Поле              | Значение                                                                                |
-| ----------------- | --------------------------------------------------------------------------------------- |
-| Название          | LinkSpace                                                                               |
-| Назначение        | Персональная библиотека полезных ссылок: коллекции, теги, избранное и поиск             |
-| Основной сценарий | Сохранить ссылку в коллекцию с тегами, а потом быстро найти ее поиском или фильтрами    |
-| Git repository    | https://github.com/Pipchenkovaa/linkspace                                               |
-| CI                | https://github.com/Pipchenkovaa/linkspace/actions                                       |
-| Server OS         | Ubuntu 24.04 LTS                                                                        |
-| Hosting type      | VPS, провайдер: _заполнить_                                                             |
-| Public IP         | _заполнить_                                                                             |
-| Application port  | API — 8000, интерфейс — 3000; оба слушают только 127.0.0.1                              |
-| Public URL        | https://_заполнить_                                                                     |
-| Process manager   | systemd: `linkspace-api.service`, `linkspace-web.service`                               |
-| Reverse proxy     | Nginx: `/api/` → 127.0.0.1:8000, `/` → 127.0.0.1:3000; HTTPS от Let's Encrypt (certbot) |
-| Log command       | `journalctl -u linkspace-api -f`                                                        |
-| Restart command   | `sudo systemctl restart linkspace-api linkspace-web`                                    |
+|                       |                                                                                                |
+| --------------------- | ---------------------------------------------------------------------------------------------- |
+| **Продукт**           | LinkSpace                                                                                      |
+| **Тип**               | Web-приложение                                                                                 |
+| **Версия**            | 1.0.0                                                                                          |
+| **Назначение**        | Персональная библиотека для хранения и организации полезных ссылок                             |
+| **Пользователь**      | Человек, который регулярно сохраняет статьи, документацию, инструменты и учебные материалы     |
+| **Основной сценарий** | Сохранить ссылку [->] организовать в коллекцию и теги [->] позже найти через поиск или фильтры |
+| **Backend**           | Python, FastAPI                                                                                |
+| **Frontend**          | Next.js, React, TypeScript                                                                     |
+| **Хранение**          | JSON                                                                                           |
+| **Тестирование**      | pytest                                                                                         |
+| **CI**                | GitHub Actions                                                                                 |
+| **Repository**        | ...                                                                                            |
+
+## MVP
+
+**Входит:** коллекции, ссылки, теги, избранное, поиск, фильтры и статистика.
+
+**Не входит:** авторизация, multi-user, автоматическое получение metadata,
+пагинация, база данных.
+
+Подробнее: [docs/mvp.md](docs/mvp.md).
 
 ## Локальный запуск
 
-| Поле                   | Значение                                                                |
-| ---------------------- | ----------------------------------------------------------------------- |
-| Команда запуска API    | `uvicorn app_final:app --env-file .env`                                 |
-| Команда запуска фронта | `cd frontend && npm run dev`                                            |
-| Локальные адреса       | API: http://127.0.0.1:8000, интерфейс: http://localhost:3000            |
-| Команда проверки       | `curl http://127.0.0.1:8000/health`                                     |
-| Переменные окружения   | `DATA_DIR`, `LOG_LEVEL`, `CORS_ORIGINS`; у фронта `NEXT_PUBLIC_API_URL` |
+**API** `uvicorn app_final:app --env-file .env`
 
-## Маршрут запроса
+**Frontend** `cd frontend && npm run dev`
 
-```
-Браузер → DNS (домен → Public IP) → UFW (22, 80, 443)
-  → Nginx :443: HTTPS, логин и пароль
-      /api/ → uvicorn 127.0.0.1:8000 → FastAPI → /var/lib/linkspace/*.json
-      /     → Next.js 127.0.0.1:3000
-  → оба процесса запускает и перезапускает systemd на Ubuntu Server
-```
+API: `http://127.0.0.1:8000`  
+Frontend: `http://localhost:3000`  
+Swagger: `http://127.0.0.1:8000/docs`
+
+## Проверка
+
+Health check: `GET /health`  
+Version: `GET /version`  
+Tests: `python -m pytest -v`  
+CI: GitHub Actions
