@@ -123,7 +123,9 @@ GitHub Actions запускается при каждом `push` и `pull reques
 
 ## Документация
 
-- [docs/mvp.md](docs/mvp.md) — продуктовые правила и API;
+- [docs/mvp.md](docs/mvp.md) — MVP и продуктовые правила;
+- [docs/ui.md](docs/ui.md) — интерфейс и пользовательские сценарии;
+- [docs/api.md](docs/api.md) — REST API;
 - [frontend/README.md](frontend/README.md) — устройство и запуск frontend;
 - [docs/troubleshooting.md](docs/troubleshooting.md) — диагностика.
 
